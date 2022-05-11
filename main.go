@@ -1,33 +1,52 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
+	"strconv"
 
 	"github.com/thisnat/go-rover/model"
 )
 
-// func check(e error) {
-// 	if e != nil {
-// 		panic(e)
-// 	}
-// }
-
 func main() {
-	// data, err := os.ReadFile("control.txt")
-	// check(err)
-	// fmt.Print(string(data))
+	var text []string
+	var mar *model.Planet
+	var rover *model.Rover
 
-	mar := model.InitPlanet(24)
-	rover := model.InitRover(*mar)
+	file, err := os.Open("control.txt")
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
 
-	rover.TurnRight()
-	rover.Move()
-	rover.TurnRight()
-	rover.Move()
-	rover.TurnRight()
-	rover.TurnRight()
-	rover.Move()
-	rover.TurnLeft()
+	scanner := bufio.NewScanner(file)
+	scanner.Split(bufio.ScanLines)
 
-	fmt.Println(rover)
+	for scanner.Scan() {
+		text = append(text, scanner.Text())
+	}
+
+	for index, line := range text {
+		if index == 0 {
+			maxEdge, _ := strconv.Atoi(line)
+
+			mar = model.InitPlanet(maxEdge)
+			rover = model.InitRover(*mar)
+
+			fmt.Printf("Map size: %d\n", mar.GetEdge())
+		} else {
+			switch line {
+			case "F":
+				rover.Move()
+			case "L":
+				rover.TurnLeft()
+			case "R":
+				rover.TurnRight()
+			default:
+				fmt.Println("unknow case")
+			}
+		}
+		fmt.Printf("%s:%d,%d\n", rover.GetDirecttion(), rover.GetX(), rover.GetY())
+	}
 }
