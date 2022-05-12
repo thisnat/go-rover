@@ -10,7 +10,7 @@ import (
 func TestPlanetGetSize(t *testing.T) {
 	t.Parallel()
 
-	mar := model.InitPlanet(24)
+	mar := model.NewPlanet(24)
 
 	expectedSize := 24
 	actualSize := mar.GetEdge()

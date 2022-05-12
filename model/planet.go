@@ -4,11 +4,10 @@ type Planet struct {
 	edge int
 }
 
-func InitPlanet(max int) *Planet {
-	var planet = new(Planet)
-	planet.edge = max
+func NewPlanet(max int) *Planet {
+	planet := Planet{max}
 
-	return planet
+	return &planet
 }
 
 func (planet *Planet) GetEdge() int {

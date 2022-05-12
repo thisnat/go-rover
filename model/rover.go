@@ -1,5 +1,10 @@
 package model
 
+import (
+	"fmt"
+	"strconv"
+)
+
 type Rover struct {
 	x         int
 	y         int
@@ -14,17 +19,39 @@ const (
 	E = "E"
 )
 
-func InitRover(planet Planet) *Rover {
-	var rover = new(Rover)
+func (rover *Rover) ControlByInput(command []string) {
 	rover.x = 0
 	rover.y = 0
 	rover.direction = N
-	rover.planet = planet
 
-	return rover
+	for index, line := range command {
+		if index == 0 {
+			maxEdge, err := strconv.Atoi(line)
+			if err != nil {
+				panic("First index should be a numer")
+			}
+
+			mar := NewPlanet(maxEdge)
+			rover.planet = *mar
+
+			fmt.Printf("Map size: %d\n", rover.planet.GetEdge())
+		} else {
+			switch line {
+			case "F":
+				rover.move()
+			case "L":
+				rover.turnLeft()
+			case "R":
+				rover.turnRight()
+			default:
+				fmt.Println("unknow case")
+			}
+		}
+		fmt.Printf("%s:%d,%d\n", rover.direction, rover.x, rover.y)
+	}
 }
 
-func (rover *Rover) Move() {
+func (rover *Rover) move() {
 	if rover.direction == N || rover.direction == S {
 		if rover.direction == N {
 			if rover.y+1 <= rover.planet.GetEdge() {
@@ -48,7 +75,7 @@ func (rover *Rover) Move() {
 	}
 }
 
-func (rover *Rover) TurnRight() {
+func (rover *Rover) turnRight() {
 	switch rover.direction {
 	case N:
 		rover.direction = E
@@ -61,7 +88,7 @@ func (rover *Rover) TurnRight() {
 	}
 }
 
-func (rover *Rover) TurnLeft() {
+func (rover *Rover) turnLeft() {
 	switch rover.direction {
 	case N:
 		rover.direction = W

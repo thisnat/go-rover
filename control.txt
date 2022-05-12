@@ -1,9 +1,9 @@
 24
 R
 F
-R
-F
-R
-R
+L
 F
 L
+L
+F
+R
