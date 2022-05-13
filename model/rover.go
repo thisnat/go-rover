@@ -28,7 +28,7 @@ func (rover *Rover) ControlByInput(command []string) {
 		if index == 0 {
 			maxEdge, err := strconv.Atoi(line)
 			if err != nil {
-				panic("First index should be a numer")
+				panic("First index must be a numer")
 			}
 
 			mar := NewPlanet(maxEdge)

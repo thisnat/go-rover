@@ -193,3 +193,29 @@ func TestTurnLeftFourTimeShouldBeNorthZeroZero(t *testing.T) {
 	assert.Equal(t, expectedY, rover.GetY())
 	assert.Equal(t, expectedDirection, rover.GetDirecttion())
 }
+
+func TestRoverShouldNotResponseUnknowCommand(t *testing.T) {
+	t.Parallel()
+
+	var rover model.Rover
+	var command []string = []string{"24", "Q"}
+
+	rover.ControlByInput(command)
+
+	expectedX := 0
+	expectedY := 0
+	expectedDirection := "N"
+
+	assert.Equal(t, expectedX, rover.GetX())
+	assert.Equal(t, expectedY, rover.GetY())
+	assert.Equal(t, expectedDirection, rover.GetDirecttion())
+}
+
+func TestPanicWhenFirstIndexIsNotANumber(t *testing.T) {
+	t.Parallel()
+
+	var rover model.Rover
+	var command []string = []string{"test", "F"}
+
+	assert.Panics(t, func() { rover.ControlByInput(command) }, "First index must be a numer")
+}
